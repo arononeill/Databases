@@ -46,24 +46,27 @@ CREATE table Course (
     
     constraint  Course_pk PRIMARY KEY (student_group)
 );
- 
-CREATE table Room (
-    room_no varchar(6) NOT NULL,
-    room_type varchar(15),
-    capacity int,
-    /*blackboard BIT,
-    whiteboard BIT,
-    datascreen BIT,
-    dataprojector BIT,*/
-    
-    constraint  room_no_fk PRIMARY KEY (room_no)
-);
 
 CREATE table Times (
     day varchar(12) NOT NULL,
     time varchar(12) NOT NULL,
     
     constraint Times_pk PRIMARY KEY (day, time)
+);
+
+CREATE table Room (
+    room_no varchar(6) NOT NULL,
+    room_type varchar(15),
+    capacity int,
+    session_type varchar(20),
+    /*blackboard BIT,
+    whiteboard BIT,
+    datascreen BIT,
+    dataprojector BIT,*/
+    
+    constraint  room_no_fk PRIMARY KEY (room_no)
+    
+    --constraint CK_AtLeastOneContact CHECK (session_type = 'lab' AND room_type = 'Computer_Lab')
 );
  
 CREATE table Class (
@@ -157,19 +160,19 @@ INSERT INTO Student VALUES ('d8457741', 'martinCurtain', 'd8457741@mydit.ie', 'm
 INSERT INTO Student VALUES ('d16669997', 'TaianaForBriane', 'd1666999@mydit.ie', 'Headache');
 
 --Creating some rooms for the table
-INSERT INTO Room VALUES ('KEG007', 'Lecture_Hall', 80);
-INSERT INTO Room VALUES ('KE1007', 'Lecture_Hall', 80);
-INSERT INTO Room VALUES ('KE2007', 'Lecture_Hall', 60);
-INSERT INTO Room VALUES ('KE3008', 'Lecture_Hall', 100);
-INSERT INTO Room VALUES ('KE4008', 'Lecture_Hall', 75);
-INSERT INTO Room VALUES ('KAG001', 'Computer_Lab', 22);
-INSERT INTO Room VALUES ('KAG002', 'Computer_Lab', 24);
-INSERT INTO Room VALUES ('KAG003', 'Computer_Lab', 20);
-INSERT INTO Room VALUES ('KAG004', 'Computer_Lab', 22);
-INSERT INTO Room VALUES ('KA1011', 'Classroom', 30);
-INSERT INTO Room VALUES ('KA1012', 'Classroom', 30);
-INSERT INTO Room VALUES ('KA1013', 'Classroom', 25);
-INSERT INTO Room VALUES ('KA1014', 'Classroom', 20);
+INSERT INTO Room VALUES ('KEG007', 'Classroom', 80, 'lecture');
+INSERT INTO Room VALUES ('KE1007', 'Classroom', 80, 'lecture');
+INSERT INTO Room VALUES ('KE2007', 'Classroom', 60, 'lecture');
+INSERT INTO Room VALUES ('KE3008', 'Classroom', 100, 'lecture');
+INSERT INTO Room VALUES ('KE4008', 'Classroom', 75, 'lecture');
+INSERT INTO Room VALUES ('KAG001', 'Computer_Lab', 22, 'lab');
+INSERT INTO Room VALUES ('KAG002', 'Computer_Lab', 24, 'lab');
+INSERT INTO Room VALUES ('KAG003', 'Computer_Lab', 20, 'lab');
+INSERT INTO Room VALUES ('KAG004', 'Computer_Lab', 22, 'lab');
+INSERT INTO Room VALUES ('KA1011', 'Classroom', 30, 'classroom');
+INSERT INTO Room VALUES ('KA1012', 'Classroom', 30, 'classroom');
+INSERT INTO Room VALUES ('KA1013', 'Classroom', 25, 'classroom');
+INSERT INTO Room VALUES ('KA1014', 'Classroom', 20, 'classroom');
 
 INSERT INTO Times VALUES ('Monday', '10:00-11:00');
 INSERT INTO Times VALUES ('Tuesday', '14:00-16:00');
@@ -210,6 +213,3 @@ INSERT INTO Timetable VALUES ('Thursday', '12:00-14:00', 'lab', '351', 'Prolog',
 INSERT INTO Timetable VALUES ('Monday', '15:00-16:00', 'Tutorial', '401', 'Data Communications', 'dt228/3', '1', 'KA1011', 'Main Kevin St', 'OS003');
 INSERT INTO Timetable VALUES ('Tuesday', '10:00-11:00', 'Tutorial', '301', 'Programming', 'dt282/4', '2', 'KA1012', 'Main Kevin St', 'OP023');
 INSERT INTO Timetable VALUES ('Friday', '17:00-18:00', 'Tutorial', '201', 'Databases', 'dt212/3', '1', 'KA1013', 'Main Kevin St', 'DB014');
-
-
-select * from Timetable;
