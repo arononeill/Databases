@@ -130,11 +130,11 @@ insert into Lecturer values ('Jonathan McCarthy', 'JM360', 'jmac@dit.com', 'Web 
 insert into Lecturer values  ('Art Sloan', 'AS420', 'arts@dit.com', '');
 
  -- Inserting Values into Module table
-insert into Module values ('201', 'single', '10am-11am', 'Ciaran Kelly', 'Databases', '1');
-insert into Module values ('301', 'linked', '1pm-2pm', 'Michael Collins', 'Programming', '2');
-insert into Module values ('401', 'single', '3pm-4pm', 'Damien Bourke', 'Data Communications', '1');
-insert into Module values ('351', 'single', '11am-12am', 'Richard Lawlor', 'Prolog', '1');
-insert into Module values ('331', 'single', '9am-11am', 'Jonathan McCarthy', 'Web Dev', '1');
+insert into Module values ('201', 'single', '3', 'Ciaran Kelly', 'Databases', '1');
+insert into Module values ('301', 'linked', '3', 'Michael Collins', 'Programming', '2');
+insert into Module values ('401', 'single', '3', 'Damien Bourke', 'Data Communications', '1');
+insert into Module values ('351', 'single', '3', 'Richard Lawlor', 'Prolog', '1');
+insert into Module values ('331', 'single', '3', 'Jonathan McCarthy', 'Web Dev', '1');
 
 --Inserting Values into Course table
 insert into Course values ('dt228/3', 'Computer Science', 'Jane Ferris'); 
