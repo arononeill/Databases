@@ -1,7 +1,7 @@
 --SQL for DB Assignment
 DROP table College;
-ALTER TABLE Student DROP CONSTRAINT C_c_fk;
-ALTER TABLE TimeTable DROP CONSTRAINT T_t_fk DROP CONSTRAINT T_t2_fk DROP CONSTRAINT T_t3_fk DROP CONSTRAINT T_t4_fk DROP CONSTRAINT T_t5_fk;
+ALTER TABLE TimeTable DROP CONSTRAINT T_t4_fk DROP CONSTRAINT T_t5_fk DROP CONSTRAINT T_t6_fk DROP CONSTRAINT T_t7_fk;
+ALTER TABLE Class DROP CONSTRAINT module_fk DROP CONSTRAINT lecturer_fk DROP CONSTRAINT room_no2_fk;
 DROP table Course;
 DROP table Module;
 DROP table Lecturer;
@@ -33,155 +33,183 @@ CREATE table Module (
 	contact_hours varchar(20) NOT NULL,
 	lecturer varchar(20),
 	module varchar(20),
-    semester varchar(12),
+    semester varchar(12) NOT NULL,
     
     constraint L_fk foreign key (lecturer) references Lecturer(lecturer),
-    constraint  CRN_pk PRIMARY KEY (CRN)
+    constraint  CRN_pk PRIMARY KEY (CRN, module, semester)
 );
  
 CREATE table Course (
-    course_code varchar(6) NOT NULL,
+    student_group varchar(10) NOT NULL,
     course_name varchar(31),
     c_coordinator varchar(20),
     
-    constraint  Course_pk PRIMARY KEY (course_code)
-);
-
-CREATE table Class (
-	class_id varchar(20) NOT NULL,
-    course_code varchar(6) NOT NULL,
-    CRN varchar(6) NOT NULL,
-    session_type varchar(15),
-    time varchar(15),
-    day varchar(15),
-    module varchar(15),
-    lecturer varchar(15),
-    no_of_hours varchar(15),
-    room_number varchar(15),
-    location varchar(15),
-	
-	constraint CRN_fk foreign key (CRN) references Module(CRN),
-	constraint time_fk foreign key (time) references Time(time),
-	constraint day_fk foreign key (day) references Time(day),
-	constraint module_fk foreign key (module) references Module(module),
-	constraint lecturer_fk foreign key (lecturer) references Module(lecturer),
-	constraint room_number_fk foreign key (room_number) references Room(room_number),
-	
-    constraint  Class_pk PRIMARY KEY (class_id)
+    constraint  Course_pk PRIMARY KEY (student_group)
 );
  
 CREATE table Room (
     room_no varchar(6) NOT NULL,
-    room_type varchar(6),
+    room_type varchar(15),
     capacity int,
-    blackboard boolean,
-    whiteboard boolean,
-    datascreen boolean,
-    dataprojector boolean,
+    /*blackboard BIT,
+    whiteboard BIT,
+    datascreen BIT,
+    dataprojector BIT,*/
     
     constraint  room_no_fk PRIMARY KEY (room_no)
-);
- 
-CREATE table Student (
-    student_id varchar(9) NOT NULL,
-    student_name varchar(20),
-    student_email varchar(20),
-    group varchar(6),
-    student_type varchar(12),
-    
-    constraint Student_id_pk PRIMARY KEY (student_id),
-    constraint group_fk PRIMARY KEY (group)
-);
-
-CREATE table TimeTable (
-    day varchar(6),
-    time varchar(6),
-    session_type varchar(15),
-    CRN varchar(15),
-    module varchar(15),
-    group varchar(15),
-    semester varchar(15),
-    room_no varchar(6),
-    location varchar(6),
-    student_id varchar(20),
-    
-    constraint T_t_fk foreign key (day) references Time(day),
-    constraint T_t2_fk foreign key (time) references Time(time),
-    constraint T_t3_fk foreign key (session_type) references Class(session_type),
-    constraint T_t4_fk foreign key (CRN) references Module(CRN),
-    constraint T_t5_fk foreign key (module) references Module(module),
-    constraint T_t6_fk foreign key (group) references Student(group),
-    constraint T_t7_fk foreign key (semester) references Student(semester),
-    constraint T_t8_fk foreign key (room_no) references Room(room_no),
-    constraint T_t9_fk foreign key (location) references Class(location),
-    constraint T_t10_fk foreign key (student_id) references Student(student_id),
-    
-    constraint  TimeTable_pk PRIMARY KEY (room_no, student_id, group)
 );
 
 CREATE table Times (
     day varchar(12) NOT NULL,
     time varchar(12) NOT NULL,
     
-    constraint Times_pk PRIMARY KEY (day),
-    constraint Times2_pk PRIMARY KEY (time)
+    constraint Times_pk PRIMARY KEY (day, time)
 );
  
---Inserting values into the College table
-insert into College values ('Dublin Institute of Technology', 'Kevin Street');
+CREATE table Class (
+	class_id varchar(20) NOT NULL,
+    CRN varchar(6) NOT NULL,
+    session_type varchar(15),
+    time varchar(15),
+    day varchar(15),
+    module varchar(25),
+    lecturer varchar(15),
+    no_of_hours varchar(15),
+    room_no varchar(15),
+    location varchar(15),
+    semester varchar(15),
+	
+	constraint day_fk foreign key (day, time) references Times(day, time),
+	constraint module_fk foreign key (CRN, module, semester) references Module(CRN, module, semester),
+	constraint lecturer_fk foreign key (lecturer) references Lecturer(lecturer),
+	constraint room_no2_fk foreign key (room_no) references Room(room_no),
+	
+    constraint  Class_pk PRIMARY KEY (class_id, location, session_type)
+);
  
---Inserting Values into lecturer table
-insert into Lecturer values ('CK111', 'Ciaran Kelly',  'cK@dit.ie', 'Databases 2');
-insert into Lecturer values ('MC222', 'Michael Collins', 'bigmick@hotmail.com', 'Programming');
-insert into Lecturer values ('DB333', 'Damien Bourke', 'damoB@gmail.com', 'Data Communications');
-insert into Lecturer values ('RL444', 'Richard Lawlor', 'rlawlor@dit.com', 'Prolog');
-insert into Lecturer values ('DG166', 'Damien Gordon', 'dgdg@dit.com', 'Operating Systems');
-insert into Lecturer values ('JM360', 'Jonathan McCarthy', 'jmac@dit.com', 'Web Development');
-insert into Lecturer values  ('AS420', 'Art Sloan', 'arts@dit.com', '');
+CREATE table Student (
+    student_id varchar(9) NOT NULL,
+    student_name varchar(20),
+    student_email varchar(20),
+    student_type varchar(12),
+    
+    constraint Student_id_pk PRIMARY KEY (student_id)
+);
 
- --Inserting Values into Module table
-insert into Module values ('DN2001', 'Databases', 'CK111',  '10am-11am');
-insert into Module values ('DN3001', 'Programming', 'MC222',  '1pm-2pm');
-insert into Module values ('DN4001', 'Data Communications', 'DB333',  '3pm-4pm');
-insert into Module values ('DN1001', 'Prolog', 'RL444',  '11am-12am');
-insert into Module values ('DN5001', 'Web Dev', 'JM360',  '9am-11am');
+CREATE table TimeTable (
+    day varchar(10),
+    time varchar(15),
+    session_type varchar(15),
+    CRN varchar(15),
+    module varchar(25),
+    student_group varchar(15),
+    semester varchar(15),
+    room_no varchar(6),
+    location varchar(20),
+    class_id varchar(10),
+
+    constraint T_t2_fk foreign key (day, time) references Times(day, time),
+    constraint T_t4_fk foreign key (CRN, module, semester) references Module(CRN, module, semester),
+    constraint T_t5_fk foreign key (room_no) references Room(room_no),
+    constraint T_t6_fk foreign key (class_id, location, session_type) references Class(class_id, location, session_type),
+    constraint T_t7_fk foreign key (student_group) references Course(student_group),
+    
+    constraint  TimeTable_pk PRIMARY KEY (room_no, student_group)
+);
+
+-- Inserting values into the College table
+insert into College values ('Dublin Institute of Technology', 'Kevin Street');
+
+-- Inserting Values into lecturer table
+insert into Lecturer values ('Ciaran Kelly', 'CK111', 'cK@dit.ie', 'Databases 2');
+insert into Lecturer values ('Michael Collins', 'MC222', 'bigmick@hotmail.com', 'Programming');
+insert into Lecturer values ('Damien Bourke', 'DB333', 'damoB@gmail.com', 'Data Communications');
+insert into Lecturer values ('Richard Lawlor', 'RL444', 'rlawlor@dit.com', 'Prolog');
+insert into Lecturer values ('Damien Gordon', 'DG166', 'dgdg@dit.com', 'Operating Systems');
+insert into Lecturer values ('Jonathan McCarthy', 'JM360', 'jmac@dit.com', 'Web Development');
+insert into Lecturer values  ('Art Sloan', 'AS420', 'arts@dit.com', '');
+
+ -- Inserting Values into Module table
+insert into Module values ('201', 'single', '10am-11am', 'Ciaran Kelly', 'Databases', '1');
+insert into Module values ('301', 'linked', '1pm-2pm', 'Michael Collins', 'Programming', '2');
+insert into Module values ('401', 'single', '3pm-4pm', 'Damien Bourke', 'Data Communications', '1');
+insert into Module values ('351', 'single', '11am-12am', 'Richard Lawlor', 'Prolog', '1');
+insert into Module values ('331', 'single', '9am-11am', 'Jonathan McCarthy', 'Web Dev', '1');
 
 --Inserting Values into Course table
-insert into Course values ('dt228', 'Computer Science', 'DN2001', 'Jane Ferris');
-insert into Course values ('dt282', 'Computer Science International', 'DN3001', 'Michael Collins');
-insert into Course values ('dt212', 'Computer Science Infastructure', 'DN4001', 'Damien Bourke');
+insert into Course values ('dt228/3', 'Computer Science', 'Jane Ferris'); 
+insert into Course values ('dt228/2', 'Computer Science', 'Jane Ferris');
+insert into Course values ('dt282/3', 'Computer Science International', 'Michael Collins');
+insert into Course values ('dt282/2', 'Computer Science International', 'Michael Collins');
+insert into Course values ('dt282/4', 'Computer Science International', 'Michael Collins');
+insert into Course values ('dt212/3', 'Computer Science Infastructure', 'Damien Bourke');
 
 --Filling in some values into the student table
-INSERT INTO Student VALUES ('c16476404', 'brendanODowd', 'c16476404@mydit.ie', 'dt228', 'undergrad');
-INSERT INTO Student VALUES ('c16546181', 'ryanMcGrane', 'c18191515@mydit.ie', 'dt228', 'undergrad');
-INSERT INTO Student VALUES ('c15181181', 'aronONeill', 'c16845115@mydit.ie', 'dt228', 'undergrad');
-INSERT INTO Student VALUES ('x19110244', 'chenxiMing', 'x19110244@mydit.ie', 'dt282', 'exchnage');
-INSERT INTO Student VALUES ('x34856756', 'alessandroBalogna', 'x34856756@mydit.ie', 'dt282', 'exchnage');
-INSERT INTO Student VALUES ('x21588701', 'pedroHernandes', 'x21588701@mydit.ie', 'dt282', 'exchnage');
-INSERT INTO Student VALUES ('d51181115', 'benWhite', 'd51181115@mydit.ie', 'dt282', 'mature');
-INSERT INTO Student VALUES ('d3298570', 'markMurphy', 'd3298570@mydit.ie', 'dt211', 'mature');
-INSERT INTO Student VALUES ('d8457741', 'martinCurtain', 'd8457741@mydit.ie', 'dt211', 'mature');
-INSERT INTO Student VALUES ('d16669997', 'TaianaForBriane', 'd1666999@mydit.ie', 'dt228', 'Headache');
-
-INSERT INTO Class VALUES ('OS001');
-INSERT INTO Class VALUES ('OP021');
-INSERT INTO Class VALUES ('DB012');
-INSERT INTO Class VALUES ('PD008');
+INSERT INTO Student VALUES ('c16476404', 'brendanODowd', 'c16476404@mydit.ie', 'undergrad');
+INSERT INTO Student VALUES ('c16546181', 'ryanMcGrane', 'c18191515@mydit.ie', 'undergrad');
+INSERT INTO Student VALUES ('c15181181', 'aronONeill', 'c16845115@mydit.ie', 'undergrad');
+INSERT INTO Student VALUES ('x19110244', 'chenxiMing', 'x19110244@mydit.ie', 'exchnage');
+INSERT INTO Student VALUES ('x34856756', 'alessandroBalogna', 'x34856756@mydit.ie', 'exchnage');
+INSERT INTO Student VALUES ('x21588701', 'pedroHernandes', 'x21588701@mydit.ie', 'exchnage');
+INSERT INTO Student VALUES ('d51181115', 'benWhite', 'd51181115@mydit.ie', 'mature');
+INSERT INTO Student VALUES ('d3298570', 'markMurphy', 'd3298570@mydit.ie', 'mature');
+INSERT INTO Student VALUES ('d8457741', 'martinCurtain', 'd8457741@mydit.ie', 'mature');
+INSERT INTO Student VALUES ('d16669997', 'TaianaForBriane', 'd1666999@mydit.ie', 'Headache');
 
 --Creating some rooms for the table
-INSERT INTO Room VALUES ('KEG007', 80, 'Lecture_Hall', 'OS001');
-INSERT INTO Room VALUES ('KE1007', 80, 'Lecture_Hall', 'OP021');
-INSERT INTO Room VALUES ('KE2007', 60, 'Lecture_Hall', 'DB012');
-INSERT INTO Room VALUES ('KE3008', 100, 'Lecture_Hall', 'PD008');
-INSERT INTO Room VALUES ('KE4008', 75, 'Lecture_Hall', 'PD008');
-INSERT INTO Room VALUES ('KAG001', 22, 'Computer_Lab', 'OP021');
-INSERT INTO Room VALUES ('KAG002', 24, 'Computer_Lab', 'DB012');
-INSERT INTO Room VALUES ('KAG003', 20, 'Computer_Lab', 'OP021');
-INSERT INTO Room VALUES ('KAG004', 22, 'Computer_Lab', 'PD008');
-INSERT INTO Room VALUES ('KA1001', 30, 'Classroom', 'PD008');
-INSERT INTO Room VALUES ('KA1002', 30, 'Classroom', 'OP021');
-INSERT INTO Room VALUES ('KA1003', 25, 'Classroom', 'PD008');
-INSERT INTO Room VALUES ('KA1004', 20, 'Classroom', 'DB012');
+INSERT INTO Room VALUES ('KEG007', 'Lecture_Hall', 80);
+INSERT INTO Room VALUES ('KE1007', 'Lecture_Hall', 80);
+INSERT INTO Room VALUES ('KE2007', 'Lecture_Hall', 60);
+INSERT INTO Room VALUES ('KE3008', 'Lecture_Hall', 100);
+INSERT INTO Room VALUES ('KE4008', 'Lecture_Hall', 75);
+INSERT INTO Room VALUES ('KAG001', 'Computer_Lab', 22);
+INSERT INTO Room VALUES ('KAG002', 'Computer_Lab', 24);
+INSERT INTO Room VALUES ('KAG003', 'Computer_Lab', 20);
+INSERT INTO Room VALUES ('KAG004', 'Computer_Lab', 22);
+INSERT INTO Room VALUES ('KA1011', 'Classroom', 30);
+INSERT INTO Room VALUES ('KA1012', 'Classroom', 30);
+INSERT INTO Room VALUES ('KA1013', 'Classroom', 25);
+INSERT INTO Room VALUES ('KA1014', 'Classroom', 20);
+
+INSERT INTO Times VALUES ('Monday', '10:00-11:00');
+INSERT INTO Times VALUES ('Tuesday', '14:00-16:00');
+INSERT INTO Times VALUES ('Thursday', '11:00-12:00');
+INSERT INTO Times VALUES ('Friday', '13:00-14:00');
+INSERT INTO Times VALUES ('Monday', '11:00-13:00');
+INSERT INTO Times VALUES ('Tuesday', '16:00-18:00');
+INSERT INTO Times VALUES ('Thursday', '12:00-14:00');
+INSERT INTO Times VALUES ('Friday', '14:00-16:00');
+INSERT INTO Times VALUES ('Monday', '15:00-16:00');
+INSERT INTO Times VALUES ('Tuesday', '10:00-11:00');
+INSERT INTO Times VALUES ('Friday', '17:00-18:00');
+
+INSERT INTO Class VALUES ('OS001', '401', 'lecture', '10:00-11:00', 'Monday', 'Data Communications', 'Damien Bourke', '1', 'KEG007',  'Main Kevin St', '1');
+INSERT INTO Class VALUES ('OP021', '301', 'lecture', '14:00-16:00', 'Tuesday', 'Programming', 'Michael Collins', '2', 'KE1007', 'Main Kevin St', '2');
+INSERT INTO Class VALUES ('DB012', '201', 'lecture', '13:00-14:00', 'Friday', 'Databases', 'Ciaran Kelly', '1', 'KE2007', 'Main Kevin St', '1');
+INSERT INTO Class VALUES ('PD008', '351', 'lecture', '11:00-12:00', 'Thursday', 'Prolog', 'Richard Lawlor', '1', 'KE3008',  'Main Kevin St', '1');
+
+INSERT INTO Class VALUES ('OS002', '401', 'lab', '11:00-13:00', 'Monday', 'Data Communications', 'Damien Bourke', '2', 'KAG001',  'Annex Kevin St', '1');
+INSERT INTO Class VALUES ('OP022', '301', 'lab', '16:00-18:00', 'Tuesday', 'Programming', 'Michael Collins', '2', 'KAG002', 'Annex Kevin St', '2');
+INSERT INTO Class VALUES ('DB013', '201', 'lab', '14:00-16:00', 'Friday', 'Databases', 'Ciaran Kelly', '2', 'KAG003', 'Annex Kevin St', '1');
+INSERT INTO Class VALUES ('PD009', '351', 'lab', '12:00-14:00', 'Thursday', 'Prolog', 'Richard Lawlor', '2', 'KAG004', 'Annex Kevin St', '1');
+
+INSERT INTO Class VALUES ('OS003', '401', 'Tutorial', '15:00-16:00', 'Monday', 'Data Communications', 'Damien Bourke', '1', 'KA1011',  'Main Kevin St', '1');
+INSERT INTO Class VALUES ('OP023', '301', 'Tutorial', '10:00-11:00', 'Tuesday', 'Programming', 'Michael Collins', '1', 'KA1012', 'Main Kevin St', '2');
+INSERT INTO Class VALUES ('DB014', '201', 'Tutorial', '17:00-18:00', 'Friday', 'Databases', 'Ciaran Kelly', '1', 'KA1013', 'Main Kevin St', '1');
+
+INSERT INTO Timetable VALUES ('Monday', '10:00-11:00', 'lecture', '401', 'Data Communications', 'dt228/3', '1', 'KEG007', 'Main Kevin St', 'OS001');
+INSERT INTO Timetable VALUES ('Tuesday', '14:00-16:00', 'lecture', '301', 'Programming', 'dt228/3', '2', 'KE1007', 'Main Kevin St', 'OP021');
+INSERT INTO Timetable VALUES ('Friday', '13:00-14:00', 'lecture', '201', 'Databases', 'dt228/3', '1', 'KE2007', 'Main Kevin St', 'DB012');
+INSERT INTO Timetable VALUES ('Thursday', '11:00-12:00', 'lecture', '351', 'Prolog', 'dt282/2', '1', 'KE3008', 'Main Kevin St', 'PD008');
+
+INSERT INTO Timetable VALUES ('Monday', '11:00-13:00', 'lab', '401', 'Data Communications', 'dt282/2', '1', 'KAG001', 'Annex Kevin St', 'OS002');
+INSERT INTO Timetable VALUES ('Tuesday', '16:00-18:00', 'lab', '301', 'Programming', 'dt282/4', '2', 'KAG002', 'Annex Kevin St', 'OP022');
+INSERT INTO Timetable VALUES ('Friday', '14:00-16:00', 'lab', '201', 'Databases', 'dt212/3', '1', 'KAG003', 'Annex Kevin St', 'DB013');
+INSERT INTO Timetable VALUES ('Thursday', '12:00-14:00', 'lab', '351', 'Prolog', 'dt282/3', '1', 'KAG004', 'Annex Kevin St', 'PD009');
+
+INSERT INTO Timetable VALUES ('Monday', '15:00-16:00', 'Tutorial', '401', 'Data Communications', 'dt228/3', '1', 'KA1011', 'Main Kevin St', 'OS003');
+INSERT INTO Timetable VALUES ('Tuesday', '10:00-11:00', 'Tutorial', '301', 'Programming', 'dt282/4', '2', 'KA1012', 'Main Kevin St', 'OP023');
+INSERT INTO Timetable VALUES ('Friday', '17:00-18:00', 'Tutorial', '201', 'Databases', 'dt212/3', '1', 'KA1013', 'Main Kevin St', 'DB014');
 
 
-
+select * from Timetable;
