@@ -26,7 +26,7 @@ CREATE table Lecturer (
     total_hours int,
     
     constraint  Lecturer_pk PRIMARY KEY (lecturer),
-    constraint total_hours_ck check (total_hours <= 20)
+    constraint total_hours_ck check (total_hours <= 20) -- checks the total number of hours the lecturer has worked to see if its less than 20
 );
  
 CREATE table Module (
@@ -69,6 +69,7 @@ CREATE table Room (
     
     constraint  room_no_fk PRIMARY KEY (room_no),
     
+	-- Checks to make sure that if the session type is a lab then the room type has to be a lab or if the session_type is a lecturer or tutorial then a room type must be a classroom
     constraint room_type_and_session_ck CHECK (
     CASE
         WHEN (session_type = 'lab' and room_type = 'Computer_Lab') or (session_type = 'lecture' and room_type = 'Classroom') or (session_type = 'Tutorial' and room_type = 'Classroom')
@@ -98,6 +99,7 @@ CREATE table Class (
 	
     constraint  Class_pk PRIMARY KEY (class_id, location, session_type),
     
+	-- checks to make sure that the number of hours each class is less than or equal to 4
     constraint no_of_hours_ck check (no_of_hours <= 4)
 );
  
@@ -189,6 +191,7 @@ INSERT INTO Room VALUES ('KA1012', 'Classroom', 30, 'Tutorial');
 INSERT INTO Room VALUES ('KA1013', 'Classroom', 25, 'Tutorial');
 INSERT INTO Room VALUES ('KA1014', 'Classroom', 20, 'Tutorial');
 
+--Inserting Values into times table
 INSERT INTO Times VALUES ('Monday', '10:00-11:00');
 INSERT INTO Times VALUES ('Tuesday', '14:00-16:00');
 INSERT INTO Times VALUES ('Thursday', '11:00-12:00');
@@ -201,6 +204,7 @@ INSERT INTO Times VALUES ('Monday', '15:00-16:00');
 INSERT INTO Times VALUES ('Tuesday', '10:00-11:00');
 INSERT INTO Times VALUES ('Friday', '17:00-18:00');
 
+--Inserting Values into Class table
 INSERT INTO Class VALUES ('OS001', '401', 'lecture', '10:00-11:00', 'Monday', 'Data Communications', 'Damien Bourke', '1', 'KEG007',  'Main Kevin St', '1');
 INSERT INTO Class VALUES ('OP021', '301', 'lecture', '14:00-16:00', 'Tuesday', 'Programming', 'Michael Collins', '2', 'KE1007', 'Main Kevin St', '2');
 INSERT INTO Class VALUES ('DB012', '201', 'lecture', '13:00-14:00', 'Friday', 'Databases', 'Ciaran Kelly', '1', 'KE2007', 'Main Kevin St', '1');
@@ -215,6 +219,7 @@ INSERT INTO Class VALUES ('OS003', '401', 'Tutorial', '15:00-16:00', 'Monday', '
 INSERT INTO Class VALUES ('OP023', '301', 'Tutorial', '10:00-11:00', 'Tuesday', 'Programming', 'Michael Collins', '1', 'KA1012', 'Main Kevin St', '2');
 INSERT INTO Class VALUES ('DB014', '201', 'Tutorial', '17:00-18:00', 'Friday', 'Databases', 'Ciaran Kelly', '1', 'KA1013', 'Main Kevin St', '1');
 
+--Inserting Values into Timetable table
 INSERT INTO Timetable VALUES ('Monday', '10:00-11:00', 'lecture', '401', 'Data Communications', 'dt228/3', 'dt228', '1', 'KEG007', 'Main Kevin St', 'OS001');
 INSERT INTO Timetable VALUES ('Tuesday', '14:00-16:00', 'lecture', '301', 'Programming', 'dt228/3', 'dt228', '2', 'KE1007', 'Main Kevin St', 'OP021');
 INSERT INTO Timetable VALUES ('Friday', '13:00-14:00', 'lecture', '201', 'Databases', 'dt228/3', 'dt228', '1', 'KE2007', 'Main Kevin St', 'DB012');
