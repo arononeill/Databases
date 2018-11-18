@@ -96,7 +96,9 @@ CREATE table Class (
 	constraint lecturer_fk foreign key (lecturer) references Lecturer(lecturer),
 	constraint room_no2_fk foreign key (room_no) references Room(room_no),
 	
-    constraint  Class_pk PRIMARY KEY (class_id, location, session_type)
+    constraint  Class_pk PRIMARY KEY (class_id, location, session_type),
+    
+    constraint no_of_hours_ck check (no_of_hours <= 4)
 );
  
 CREATE table Student (
