@@ -19,14 +19,14 @@ select student_email from student;
 -- MINUS query to find out who is a course coorinator but isn't a lecturer
 select c_coordinator from Course
 MINUS
-select lecturer_name from Lecturer;
+select lecturer from Lecturer;
 
 
 /* INNER JOIN to get the course name from the Course table and the student name from the table Student
 using the primary key, course_code from Course and using the where clause to get students studying the course dt228*/
 select course_name, student_name from Course 
 inner join Student 
-using (course_code)
+using (student_group, course_code)
 where (course_code like '%dt228');
 
 /* OUTER JOIN to get the course name from the Course table and the student name from the table Student,
@@ -51,9 +51,8 @@ where course_code not in (
     from Student
 );
 
--- CORRELATED SUBQUERY to find all rows in the Lecturer table where the value for lecturer id does not feature as a value for lecturer id in the Module table 
+-- CORRELATED SUBQUERY to find all rows in the Lecturer table where the value for lecturer does not feature as a value for lecturer in the Module table 
 select * from Lecturer l
-where l.lecturer_id =(
-select m.lecturer_id from Module m
-where m.lecturer_id = 'DB333');
-
+where l.lecturer =(
+select m.lecturer from Module m
+where m.lecturer = 'Damien Bourke');
