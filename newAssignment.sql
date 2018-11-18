@@ -160,6 +160,7 @@ insert into Course values ('dt282/3', 'dt282', 'Computer Science International',
 insert into Course values ('dt282/2', 'dt282', 'Computer Science International', 'Michael Collins');
 insert into Course values ('dt282/4', 'dt282', 'Computer Science International', 'Michael Collins');
 insert into Course values ('dt212/3', 'dt212', 'Computer Science Infastructure', 'Damien Bourke');
+insert into Course values ('dt212/2', 'dt212', 'Computer Science Infastructure', 'Damien Bourke');
 
 --Filling in some values into the student table
 INSERT INTO Student VALUES ('c16476404', 'dt228', 'dt228/3', 'brendanODowd', 'c16476404@mydit.ie', 'undergrad');
@@ -171,7 +172,7 @@ INSERT INTO Student VALUES ('x21588701', 'dt282', 'dt282/3', 'pedroHernandes', '
 INSERT INTO Student VALUES ('d51181115', 'dt211', 'dt211/3', 'benWhite', 'd51181115@mydit.ie', 'mature');
 INSERT INTO Student VALUES ('d3298570', 'dt228', 'dt211/3', 'markMurphy', 'd3298570@mydit.ie', 'mature');
 INSERT INTO Student VALUES ('d8457741', 'dt211', 'dt211/3', 'martinCurtain', 'd8457741@mydit.ie', 'mature');
-INSERT INTO Student VALUES ('d16669997', 'dt211', 'dt211/3', 'TaianaForBriane', 'd1666999@mydit.ie', 'Headache');
+INSERT INTO Student VALUES ('d16669997', 'dt211', 'dt211/2', 'TaianaForBriane', 'd1666999@mydit.ie', 'Headache');
 
 --Creating some rooms for the table
 INSERT INTO Room VALUES ('KEG007', 'Classroom', 80, 'lecture');
