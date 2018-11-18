@@ -211,7 +211,7 @@ INSERT INTO Class VALUES ('DB014', '201', 'Tutorial', '17:00-18:00', 'Friday', '
 INSERT INTO Timetable VALUES ('Monday', '10:00-11:00', 'lecture', '401', 'Data Communications', 'dt228/3', '1', 'KEG007', 'Main Kevin St', 'OS001');
 INSERT INTO Timetable VALUES ('Tuesday', '14:00-16:00', 'lecture', '301', 'Programming', 'dt228/3', '2', 'KE1007', 'Main Kevin St', 'OP021');
 INSERT INTO Timetable VALUES ('Friday', '13:00-14:00', 'lecture', '201', 'Databases', 'dt228/3', '1', 'KE2007', 'Main Kevin St', 'DB012');
-INSERT INTO Timetable VALUES ('Thursday', '11:00-12:00', 'lecture', '351', 'Prolog', 'dt282/2', '1', 'KE3008', 'Main Kevin St', 'PD008');
+INSERT INTO Timetable VALUES ('Thursday', '11:00-12:00', 'lecture', '351', 'Prolog', 'dt282/2', '1', 'KE3008', 'Main Kevin St', 'PD008'); 
 
 INSERT INTO Timetable VALUES ('Monday', '11:00-13:00', 'lab', '401', 'Data Communications', 'dt282/2', '1', 'KAG001', 'Annex Kevin St', 'OS002');
 INSERT INTO Timetable VALUES ('Tuesday', '16:00-18:00', 'lab', '301', 'Programming', 'dt282/4', '2', 'KAG002', 'Annex Kevin St', 'OP022');
