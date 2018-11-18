@@ -23,8 +23,10 @@ CREATE table Lecturer (
     lecturer_id varchar(90),
     lecturer_email varchar(30),
     lectures varchar(50),
+    total_hours int,
     
-    constraint  Lecturer_pk PRIMARY KEY (lecturer)
+    constraint  Lecturer_pk PRIMARY KEY (lecturer),
+    constraint total_hours_ck check (total_hours <= 20)
 );
  
 CREATE table Module (
@@ -64,9 +66,15 @@ CREATE table Room (
     datascreen BIT,
     dataprojector BIT,*/
     
-    constraint  room_no_fk PRIMARY KEY (room_no)
+    constraint  room_no_fk PRIMARY KEY (room_no),
     
-    --constraint CK_AtLeastOneContact CHECK (session_type = 'lab' AND room_type = 'Computer_Lab')
+    constraint room_type_and_session_ck CHECK (
+    CASE
+        WHEN (session_type = 'lab' and room_type = 'Computer_Lab') or (session_type = 'lecture' and room_type = 'Classroom') or (session_type = 'Tutorial' and room_type = 'Classroom')
+            THEN 1
+        ELSE 0
+    END = 1
+	)
 );
  
 CREATE table Class (
@@ -124,13 +132,13 @@ CREATE table TimeTable (
 insert into College values ('Dublin Institute of Technology', 'Kevin Street');
 
 -- Inserting Values into lecturer table
-insert into Lecturer values ('Ciaran Kelly', 'CK111', 'cK@dit.ie', 'Databases 2');
-insert into Lecturer values ('Michael Collins', 'MC222', 'bigmick@hotmail.com', 'Programming');
-insert into Lecturer values ('Damien Bourke', 'DB333', 'damoB@gmail.com', 'Data Communications');
-insert into Lecturer values ('Richard Lawlor', 'RL444', 'rlawlor@dit.com', 'Prolog');
-insert into Lecturer values ('Damien Gordon', 'DG166', 'dgdg@dit.com', 'Operating Systems');
-insert into Lecturer values ('Jonathan McCarthy', 'JM360', 'jmac@dit.com', 'Web Development');
-insert into Lecturer values  ('Art Sloan', 'AS420', 'arts@dit.com', '');
+insert into Lecturer values ('Ciaran Kelly', 'CK111', 'cK@dit.ie', 'Databases 2', 4);
+insert into Lecturer values ('Michael Collins', 'MC222', 'bigmick@hotmail.com', 'Programming', 5);
+insert into Lecturer values ('Damien Bourke', 'DB333', 'damoB@gmail.com', 'Data Communications', 4);
+insert into Lecturer values ('Richard Lawlor', 'RL444', 'rlawlor@dit.com', 'Prolog', 3);
+insert into Lecturer values ('Damien Gordon', 'DG166', 'dgdg@dit.com', 'Operating Systems', 0);
+insert into Lecturer values ('Jonathan McCarthy', 'JM360', 'jmac@dit.com', 'Web Development', 0);
+insert into Lecturer values  ('Art Sloan', 'AS420', 'arts@dit.com', '', 0);
 
  -- Inserting Values into Module table
 insert into Module values ('201', 'single', '3', 'Ciaran Kelly', 'Databases', '1');
@@ -169,10 +177,10 @@ INSERT INTO Room VALUES ('KAG001', 'Computer_Lab', 22, 'lab');
 INSERT INTO Room VALUES ('KAG002', 'Computer_Lab', 24, 'lab');
 INSERT INTO Room VALUES ('KAG003', 'Computer_Lab', 20, 'lab');
 INSERT INTO Room VALUES ('KAG004', 'Computer_Lab', 22, 'lab');
-INSERT INTO Room VALUES ('KA1011', 'Classroom', 30, 'classroom');
-INSERT INTO Room VALUES ('KA1012', 'Classroom', 30, 'classroom');
-INSERT INTO Room VALUES ('KA1013', 'Classroom', 25, 'classroom');
-INSERT INTO Room VALUES ('KA1014', 'Classroom', 20, 'classroom');
+INSERT INTO Room VALUES ('KA1011', 'Classroom', 30, 'Tutorial');
+INSERT INTO Room VALUES ('KA1012', 'Classroom', 30, 'Tutorial');
+INSERT INTO Room VALUES ('KA1013', 'Classroom', 25, 'Tutorial');
+INSERT INTO Room VALUES ('KA1014', 'Classroom', 20, 'Tutorial');
 
 INSERT INTO Times VALUES ('Monday', '10:00-11:00');
 INSERT INTO Times VALUES ('Tuesday', '14:00-16:00');
